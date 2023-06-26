@@ -33,8 +33,8 @@ function parseDataFromRfc2822(value) {
  *    '2016-01-19T16:07:37+00:00'    => Date()
  *    '2016-01-19T08:07:37Z' => Date()
  */
-function parseDataFromIso8601(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromIso8601(value) {
+  return new Date(value);
 }
 
 /**
@@ -83,8 +83,20 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  const timeDiff = endDate.getTime() - startDate.getTime();
+  const hours = Math.floor(timeDiff / (1000 * 60 * 60))
+    .toString()
+    .padStart(2, '0');
+  const minutes = Math.floor((timeDiff / (1000 * 60)) % 60)
+    .toString()
+    .padStart(2, '0');
+  const seconds = Math.floor((timeDiff / 1000) % 60)
+    .toString()
+    .padStart(2, '0');
+  const milliseconds = (timeDiff % 1000).toString().padStart(3, '0');
+
+  return `${hours}:${minutes}:${seconds}.${milliseconds}`;
 }
 
 /**
@@ -103,8 +115,18 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  const hours = date.getUTCHours() % 12;
+  const minutes = date.getUTCMinutes();
+
+  const hourHandAngle = hours * 30 + minutes * 0.5;
+  const minuteHandAngle = minutes * 6;
+
+  let angle = Math.abs(minuteHandAngle - hourHandAngle);
+  if (angle > 180) {
+    angle = 360 - angle;
+  }
+  return Math.PI * (angle / 180);
 }
 
 module.exports = {
