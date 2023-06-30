@@ -192,8 +192,11 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-  return Array.from(str)
-    .find((char, index, arr) => arr.indexOf(char) === arr.lastIndexOf(char)) || null;
+  return (
+    Array.from(str).find(
+      (char, index, arr) => arr.indexOf(char) === arr.lastIndexOf(char),
+    ) || null
+  );
 }
 /**
  * Returns the string representation of math interval,
@@ -374,7 +377,7 @@ function isBracketsBalanced(str) {
 }
 
 /**
- * Returns the string with n-ary (binary, ternary, etc, where n <= 10)
+ * /* Returns the string with n-ary (binary, ternary, etc, where n <= 10)
  * representation of specified number.
  * See more about
  * https://en.wikipedia.org/wiki/Binary_number
@@ -393,8 +396,9 @@ function isBracketsBalanced(str) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  // throw new Error('Not implemented');
+  return num.toString(n);
 }
 
 /**
@@ -409,8 +413,23 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  // throw new Error('Not implemented');
+  let commonPath = '';
+
+  const directories = pathes[0].split('/');
+
+  for (let i = 0; i < directories.length; i += 1) {
+    const directory = directories[i];
+
+    if (pathes.every((path) => path.split('/')[i] === directory)) {
+      commonPath += `${directory}/`;
+    } else {
+      return commonPath;
+    }
+  }
+
+  return commonPath;
 }
 
 /**
@@ -431,8 +450,24 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  // throw new Error('Not implemented');
+  const rowsM1 = m1.length;
+  const colsM1 = m1[0].length;
+  const colsM2 = m2[0].length;
+
+  const result = new Array(rowsM1);
+  for (let i = 0; i < rowsM1; i += 1) {
+    result[i] = new Array(colsM2);
+    for (let j = 0; j < colsM2; j += 1) {
+      result[i][j] = 0;
+      for (let k = 0; k < colsM1; k += 1) {
+        result[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+
+  return result;
 }
 
 /**
